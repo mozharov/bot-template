@@ -1,0 +1,25 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node-postgres
+{
+	"name": "Node.js & PostgreSQL",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"forwardPorts": [
+		3000,
+		5432
+	],
+	"postCreateCommand": "npm ci",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"dbaeumer.vscode-eslint",
+				"Codeium.codeium",
+				"esbenp.prettier-vscode",
+				"Gruntfuggly.todo-tree",
+				"Postman.postman-for-vscode",
+				"cweijan.vscode-database-client2"
+			]
+		}
+	}
+}

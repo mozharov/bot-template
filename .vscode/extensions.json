@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "dbaeumer.vscode-eslint",
+        "codeium.codeium",
+        "esbenp.prettier-vscode",
+        "gruntfuggly.todo-tree",
+        "postman.postman-for-vscode",
+        "cweijan.vscode-database-client2"
+    ]
+}

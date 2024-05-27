@@ -1,0 +1,42 @@
+{
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/main.js",
+    "start:dev": "DEBUG=grammy* nodemon --signal SIGTERM src/main.ts",
+    "format": "prettier --write src",
+    "lint": "eslint src",
+    "migration:generate": "typeorm-ts-node-commonjs -d src/database/index.ts -p true migration:generate src/database/migrations/migration",
+    "migration:run": "typeorm-ts-node-commonjs migration:run -d src/database/index.ts",
+    "migration:revert": "typeorm-ts-node-commonjs migration:revert -d src/database/index.ts"
+  },
+  "engines": {
+    "node": ">=20.13 <21.0.0",
+    "npm": ">=10 <11.0.0"
+  },
+  "devDependencies": {
+    "@ngrok/ngrok": "^1.2.0",
+    "@types/node": "^20.12.12",
+    "eslint": "^8.57.0",
+    "globals": "^15.2.0",
+    "nodemon": "^3.1.0",
+    "pino-pretty": "^11.0.0",
+    "prettier": "^3.2.5",
+    "ts-node": "^10.9.2",
+    "tslib": "^2.6.2",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.9.0"
+  },
+  "dependencies": {
+    "@grammyjs/auto-retry": "^2.0.1",
+    "@grammyjs/i18n": "^1.0.2",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "dotenv": "^16.4.5",
+    "fastify": "^4.27.0",
+    "fastify-plugin": "^4.5.1",
+    "grammy": "^1.23.0",
+    "pg": "^8.11.5",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.20"
+  }
+}
