@@ -6,7 +6,7 @@
 	"service": "app",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"forwardPorts": [
-		3000,
+		8443,
 		5432
 	],
 	"postCreateCommand": "npm ci",

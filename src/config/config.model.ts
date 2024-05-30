@@ -50,6 +50,12 @@ export class Configuration {
   NGROK_TOKEN: string | null
 
   @Expose()
+  @IsOptional()
+  @IsString()
+  @Transform(({value}) => value || null)
+  NGROK_DOMAIN: string | null
+
+  @Expose()
   @IsString()
   @IsNotEmpty()
   DB_HOST: string
