@@ -27,6 +27,7 @@
   "dependencies": {
     "@fastify/cors": "^9.0.1",
     "@grammyjs/auto-retry": "^2.0.1",
+    "@grammyjs/i18n": "^1.0.2",
     "dotenv": "^16.4.5",
     "fastify": "^4.27.0",
     "fastify-plugin": "^4.5.1",

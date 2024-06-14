@@ -15,7 +15,7 @@ export const config = {
       .string()
       .optional()
       .transform(value => value || undefined),
-    BOT_ID: z
+    BOT_ID: z.coerce
       .number()
       .optional()
       .transform(value => value || undefined),
