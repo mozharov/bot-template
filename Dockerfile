@@ -1,39 +1,23 @@
-ARG BASE_IMAGE=amd64/node:20.13-alpine
-
-
-## Development stage
-FROM ${BASE_IMAGE} As development
-
-RUN mkdir -p /app/node_modules && chown -R node:node /app
+FROM amd64/node:20.14-slim As base
 WORKDIR /app
-COPY --chown=node:node package*.json ./
-USER node
-RUN npm ci
-COPY --chown=node:node . .
 
+FROM base as pnpm
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN npm install -g pnpm@9.3
+RUN corepack enable
+COPY . .
 
-## Build stage
-FROM ${BASE_IMAGE} AS build
+FROM pnpm As build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm run build
 
-RUN mkdir -p /app/node_modules && chown -R node:node /app
-WORKDIR /app
-COPY --chown=node:node --from=development /app/package*.json ./
-COPY --chown=node:node --from=development /app/node_modules ./node_modules
-COPY --chown=node:node --from=development /app/src ./src
-COPY --chown=node:node --from=development /app/tsconfig*.json ./
-COPY --chown=node:node --from=development /app/.env ./
-USER node
-RUN npm run build
-RUN npm ci --omit=dev && npm cache clean --force
+FROM pnpm AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
-
-## Production stage
-FROM ${BASE_IMAGE} AS production
-
-RUN mkdir -p /app/node_modules && chown -R node:node /app
-WORKDIR /app
-COPY --chown=node:node --from=build /app/node_modules ./node_modules
-COPY --chown=node:node --from=build /app/dist ./dist
-COPY --chown=node:node --from=build /app/.env ./
-USER node
-CMD ["node", "dist/main"]
+FROM base
+COPY --from=prod-deps /app/node_modules /app/node_modules
+COPY --from=build /app/dist /app/dist
+COPY --from=pnpm /app/.env /app/.env
+COPY --from=pnpm /app/package.json /app/package.json
+CMD [ "node", "dist/main" ]

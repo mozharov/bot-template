@@ -1,11 +1,16 @@
-## Updating Node.js version
+# Intro
+This project uses devcontainer technology with DevPod for consistent development.
 
-Files that need to be updated for a new Node.js version:
+WebStorm is the recommended IDE for development.
 
-- `.devcontainer/Dockerfile`
-- `package.json`
-- `.github/workflows/lint-and-build.yml`
+### Stack:
+- PostgreSQL
+- Node.js, ESM
+- TypeScript
 
-## Database
-
-All new entities and migrations should be added to the `src/database/index.ts`.
+## Updating Node.js and PNPM
+Update versions in these files:
+1. `.devcontainer/Dockerfile`
+2. `package.json`
+3. `Dockerfile`
+4. `.github/actions/lint-and-build/action.yml`

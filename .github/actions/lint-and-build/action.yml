@@ -2,23 +2,33 @@ name: 'Linting & Building'
 inputs:
   node-version:
     description: 'Node.js version'
-    required: true
+    required: false
+    default: '20.14.0'
+  pnpm-version:
+    description: 'PNPM version'
+    required: false
+    default: '9.3'
 runs:
   using: 'composite'
   steps:
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: '${{ inputs.pnpm-version }}'
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '${{ inputs.node-version }}'
+        cache: 'pnpm'
 
     - name: Install dependencies
-      run: npm ci
+      run: pnpm install
       shell: bash
 
     - name: Lint
-      run: npm run lint
+      run: pnpm run lint
       shell: bash
 
     - name: Build
-      run: npm run build
+      run: pnpm run build
       shell: bash

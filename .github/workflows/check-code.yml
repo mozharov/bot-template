@@ -1,0 +1,11 @@
+name: Checking the code
+
+on:
+  push:
+
+jobs:
+  check-code:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/lint-and-build

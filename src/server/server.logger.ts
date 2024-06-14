@@ -1,10 +1,10 @@
-import {FastifyBaseLogger, FastifyRequest} from 'fastify'
-import {PinoLoggerOptions} from 'fastify/types/logger'
-import {config} from '../config'
-import {isBotApi} from './server.helper'
+import {type FastifyBaseLogger, type FastifyRequest} from 'fastify'
+import {type PinoLoggerOptions} from 'fastify/types/logger.js'
+import {config} from '../config.js'
 
 const envToLogger: Record<string, FastifyBaseLogger | boolean | PinoLoggerOptions> = {
   development: {
+    level: config.LOG_LEVEL,
     transport: {
       target: 'pino-pretty',
       options: {
@@ -14,29 +14,22 @@ const envToLogger: Record<string, FastifyBaseLogger | boolean | PinoLoggerOption
     },
     serializers: {
       req(request: FastifyRequest) {
-        if (isBotApi(request)) return undefined
         return {
           url: request.url,
           method: request.method,
-          hostname: request.hostname,
-          remoteAddress: request.socket.remoteAddress,
-          remotePort: request.socket.remotePort,
         }
       },
     },
-    level: 'debug',
   },
   production: {
-    level: config.get('LOG_LEVEL'),
+    level: config.LOG_LEVEL,
+    formatters: {level: label => ({level: label}), bindings: () => ({})},
+    timestamp: false,
     serializers: {
       req(request: FastifyRequest) {
-        const url = isBotApi(request) ? undefined : request.url
         return {
-          url,
+          url: request.url,
           method: request.method,
-          hostname: request.hostname,
-          remoteAddress: request.socket.remoteAddress,
-          remotePort: request.socket.remotePort,
         }
       },
     },
@@ -44,4 +37,4 @@ const envToLogger: Record<string, FastifyBaseLogger | boolean | PinoLoggerOption
   test: false,
 }
 
-export const loggerConfig = envToLogger[config.get('NODE_ENV')]
+export const loggerConfig = envToLogger[config.NODE_ENV]
