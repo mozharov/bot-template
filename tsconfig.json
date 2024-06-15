@@ -13,7 +13,10 @@
     "noImplicitThis": true,
     "noImplicitAny": true,
     "noImplicitOverride": true,
-    "noUncheckedIndexedAccess": true
+    "noUncheckedIndexedAccess": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true, // true to avoid incompatibility with @grammyjs/i18n
   },
   "include": ["./src/**/*.ts", "eslint.config.js"],
   "ts-node": {

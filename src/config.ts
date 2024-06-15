@@ -33,6 +33,7 @@ export const config = {
       .string()
       .optional()
       .transform(value => value || undefined),
+    DB_URL: z.string().url(),
   }),
   get isDevelopment(): boolean {
     return this.NODE_ENV === 'development'
