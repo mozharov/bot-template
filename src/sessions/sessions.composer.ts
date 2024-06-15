@@ -9,5 +9,6 @@ export const sessionsComposer = new Composer<Context>()
 sessionsComposer.use(
   lazySession({
     storage: new SessionStorage(),
+    initial: () => ({}),
   }),
 )

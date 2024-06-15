@@ -1,5 +1,7 @@
 import {database} from '../database/database.js'
 
+const initialValue = '{}'
+
 export class SessionStorage {
   public async read(key: string): Promise<unknown> {
     const session = await database.sessions.findOne({key})
@@ -10,7 +12,9 @@ export class SessionStorage {
 
   public write(key: string, value: unknown): Promise<void> {
     if (!value) return this.delete(key)
-    database.sessions.create({key, value: JSON.stringify(value)})
+    const stringValue = JSON.stringify(value)
+    if (stringValue === initialValue) return this.delete(key)
+    database.sessions.create({key, value: stringValue})
     return database.em.flush()
   }
 
