@@ -11,10 +11,7 @@ export const config = {
     PORT: port(),
     NODE_ENV: z.enum(['production', 'development']),
     LOG_LEVEL: z.enum(['trace', 'debug', 'info', 'warn', 'error', 'fatal']),
-    MINI_APP_ORIGIN: z
-      .string()
-      .optional()
-      .transform(value => value || undefined),
+    MINI_APP_URL: z.string().url(),
     BOT_ID: z.coerce
       .number()
       .optional()
@@ -57,5 +54,9 @@ export const config = {
       can_join_groups: false,
       can_connect_to_business: false,
     }
+  },
+  get corsOrigins(): string[] {
+    const miniAppUrl = new URL(this.MINI_APP_URL)
+    return [miniAppUrl.origin]
   },
 }

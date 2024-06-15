@@ -8,5 +8,5 @@ export const startComposer = new Composer<Context>()
 startComposer.chatType('private').command('start', async ctx => {
   await ctx.reply(ctx.t('start'))
   const userExists = await database.users.exists({telegramId: ctx.from.id})
-  server.log.debug(userExists)
+  server.log.debug(`User ${ctx.from.id.toString()} ${userExists ? 'exists' : 'does not exist'}`)
 })

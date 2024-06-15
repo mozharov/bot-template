@@ -10,7 +10,7 @@ export const server = await initFastify({logger})
 
 export async function bootstrap(): Promise<void> {
   server.setErrorHandler(errorHandler)
-  await server.register(cors, {origin: config.MINI_APP_ORIGIN ?? false})
+  await server.register(cors, {origin: config.corsOrigins})
   await server.register(botPlugin)
   await server.register(databasePlugin)
   await server.listen({port: config.PORT})
