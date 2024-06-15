@@ -3,7 +3,7 @@ import {type PinoLoggerOptions} from 'fastify/types/logger.js'
 import {config} from '../config.js'
 import {botPath} from '../bot/bot.plugin.js'
 
-const envToLogger: Record<string, FastifyBaseLogger | boolean | PinoLoggerOptions> = {
+const loggers: Record<string, FastifyBaseLogger | boolean | PinoLoggerOptions> = {
   development: {
     level: config.LOG_LEVEL,
     transport: {
@@ -14,12 +14,7 @@ const envToLogger: Record<string, FastifyBaseLogger | boolean | PinoLoggerOption
       },
     },
     serializers: {
-      req(request: FastifyRequest) {
-        return {
-          url: request.url,
-          method: request.method,
-        }
-      },
+      req: serializeRequest,
     },
   },
   production: {
@@ -27,16 +22,18 @@ const envToLogger: Record<string, FastifyBaseLogger | boolean | PinoLoggerOption
     formatters: {level: label => ({level: label}), bindings: () => ({})},
     timestamp: false,
     serializers: {
-      req(request: FastifyRequest) {
-        if (request.url.startsWith(botPath)) return 'bot webhook'
-        return {
-          url: request.url,
-          method: request.method,
-        }
-      },
+      req: serializeRequest,
     },
   },
   test: false,
 }
 
-export const loggerConfig = envToLogger[config.NODE_ENV]
+export const loggerConfig = loggers[config.NODE_ENV]
+
+function serializeRequest(request: FastifyRequest): string | Record<string, string> {
+  if (request.url.startsWith(botPath)) return 'bot-webhook'
+  return {
+    url: request.url,
+    method: request.method,
+  }
+}

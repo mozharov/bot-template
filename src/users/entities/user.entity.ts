@@ -7,5 +7,10 @@ export class User extends BaseEntity {
   public [EntityRepositoryType]?: UserRepository
 
   @Property({type: BigIntType, unique: true})
-  public telegramId!: number
+  public telegramId: number
+
+  constructor(telegramId: User['telegramId']) {
+    super()
+    this.telegramId = telegramId
+  }
 }

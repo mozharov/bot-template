@@ -1,20 +1,24 @@
+import {database} from '../database/database.js'
+
 export class SessionStorage {
-  // TODO: save session data to database
-  private readonly data: Record<string, unknown> = {}
-
-  public read(key: string): unknown {
-    return this.data[key]
+  public async read(key: string): Promise<unknown> {
+    const session = await database.sessions.findOne({key})
+    if (!session) return undefined
+    const value: unknown = JSON.parse(session.value)
+    return value || undefined
   }
 
-  public write(key: string, value: unknown): void {
-    this.data[key] = value
+  public write(key: string, value: unknown): Promise<void> {
+    if (!value) return this.delete(key)
+    database.sessions.create({key, value: JSON.stringify(value)})
+    return database.em.flush()
   }
 
-  public delete(key: string): void {
-    this.data[key] = undefined
+  public async delete(key: string): Promise<void> {
+    await database.sessions.nativeDelete({key})
   }
 
-  public has(key: string): boolean {
-    return this.data[key] !== undefined
+  public has(key: string): Promise<boolean> {
+    return database.sessions.exists(key)
   }
 }

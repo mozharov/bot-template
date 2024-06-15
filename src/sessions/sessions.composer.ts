@@ -4,7 +4,8 @@ import {SessionStorage} from './sessions.storage.js'
 
 export const sessionsComposer = new Composer<Context>()
 
-// session per each chat
+// Required for some grammy.js plugins like @grammyjs/conversations
+// Store only one session per each chat
 sessionsComposer.use(
   lazySession({
     storage: new SessionStorage(),
