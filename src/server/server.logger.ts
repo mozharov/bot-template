@@ -1,6 +1,7 @@
 import {type FastifyBaseLogger, type FastifyRequest} from 'fastify'
 import {type PinoLoggerOptions} from 'fastify/types/logger.js'
 import {config} from '../config.js'
+import {botPath} from '../bot/bot.plugin.js'
 
 const envToLogger: Record<string, FastifyBaseLogger | boolean | PinoLoggerOptions> = {
   development: {
@@ -27,6 +28,7 @@ const envToLogger: Record<string, FastifyBaseLogger | boolean | PinoLoggerOption
     timestamp: false,
     serializers: {
       req(request: FastifyRequest) {
+        if (request.url.startsWith(botPath)) return 'bot webhook'
         return {
           url: request.url,
           method: request.method,

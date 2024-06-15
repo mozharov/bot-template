@@ -4,7 +4,7 @@ import {webhookCallback} from 'grammy'
 import {bot} from './bot.js'
 import {startTunnel, stopTunnel} from '../server/server.tunnel.js'
 
-const botPath = `/bot${config.BOT_TOKEN}`
+export const botPath = `/bot${config.BOT_TOKEN}`
 
 export const botPlugin = fastifyPlugin(async server => {
   if (!config.botInfo && config.isProduction) {
@@ -26,7 +26,7 @@ export const botPlugin = fastifyPlugin(async server => {
       return reply.status(200).send()
     })
 
-  if (config.isDevelopment) {
+  if (config.NGROK_TOKEN) {
     const tunnelUrl = await startTunnel()
     await bot.api.setWebhook(`${tunnelUrl}${botPath}`, {
       secret_token: config.SECRET_TOKEN,
@@ -35,5 +35,7 @@ export const botPlugin = fastifyPlugin(async server => {
       await bot.api.deleteWebhook()
       await stopTunnel()
     })
+  } else if (config.isDevelopment) {
+    server.log.warn('NGROK_TOKEN is not provided. Webhook will not be set.')
   }
 })

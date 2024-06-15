@@ -1,12 +1,12 @@
-import type {EntityManager, EntityRepository, Options} from '@mikro-orm/postgresql'
+import type {EntityManager, Options} from '@mikro-orm/postgresql'
 import {MikroORM} from '@mikro-orm/postgresql'
 import databaseConfig from './mikro-orm.config.js'
 import {User} from '../users/entities/user.entity.js'
+import type {UserRepository} from '../users/users.repository.js'
 
-export let database: DatabaseServices | undefined
+export let database: DatabaseServices
 
 export async function initORM(options?: Options): Promise<DatabaseServices> {
-  if (database) return database
   const instance = await MikroORM.init({
     ...databaseConfig,
     ...options,
@@ -19,8 +19,8 @@ export async function initORM(options?: Options): Promise<DatabaseServices> {
   return database
 }
 
-interface DatabaseServices {
+export interface DatabaseServices {
   orm: MikroORM
   em: EntityManager
-  users: EntityRepository<User>
+  users: UserRepository
 }
