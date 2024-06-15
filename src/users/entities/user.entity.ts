@@ -1,10 +1,10 @@
 import {Entity, Property, BigIntType, EntityRepositoryType} from '@mikro-orm/postgresql'
 import {BaseEntity} from '../../database/common/base.entity.js'
-import {UserRepository} from '../users.repository.js'
+import {UsersRepository} from '../users.repository.js'
 
-@Entity({tableName: 'users', repository: () => UserRepository})
+@Entity({tableName: 'users', repository: () => UsersRepository})
 export class User extends BaseEntity {
-  public [EntityRepositoryType]?: UserRepository
+  public [EntityRepositoryType]?: UsersRepository
 
   @Property({type: BigIntType, unique: true})
   public telegramId: number

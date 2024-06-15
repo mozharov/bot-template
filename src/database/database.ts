@@ -2,7 +2,7 @@ import type {EntityManager, Options} from '@mikro-orm/postgresql'
 import {MikroORM} from '@mikro-orm/postgresql'
 import databaseConfig from './mikro-orm.config.js'
 import {User} from '../users/entities/user.entity.js'
-import type {UserRepository} from '../users/users.repository.js'
+import type {UsersRepository} from '../users/users.repository.js'
 import type {SessionsRepository} from '../sessions/sessions.repository.js'
 import {Session} from '../sessions/entities/session.entity.js'
 
@@ -25,6 +25,6 @@ export async function initORM(options?: Options): Promise<DatabaseServices> {
 export interface DatabaseServices {
   orm: MikroORM
   em: EntityManager
-  users: UserRepository
+  users: UsersRepository
   sessions: SessionsRepository
 }
