@@ -12,6 +12,9 @@ export default tseslint.config(
         tsconfigRootDir: import.meta.dirname,
       },
     },
+  },
+  {ignores: ['src/database/migrations/*', 'dist/*']},
+  {
     rules: {
       '@typescript-eslint/consistent-type-imports': 'warn',
       '@typescript-eslint/consistent-type-exports': 'warn',

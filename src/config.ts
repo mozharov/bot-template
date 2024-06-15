@@ -34,6 +34,10 @@ export const config = {
       .optional()
       .transform(value => value || undefined),
     DB_URL: z.string().url(),
+    DB_SYNC: z.coerce.boolean(),
+    DB_MIGRATE: z.coerce.boolean(),
+    DB_POOL_MAX: z.coerce.number(),
+    DB_POOL_IDLE_TIMEOUT_MS: z.coerce.number(),
   }),
   get isDevelopment(): boolean {
     return this.NODE_ENV === 'development'

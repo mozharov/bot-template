@@ -11,6 +11,7 @@ COPY . .
 FROM pnpm As build
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm run build
+RUN pnpm run cache
 
 FROM pnpm AS prod-deps
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
@@ -18,6 +19,7 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-l
 FROM base
 COPY --from=prod-deps /app/node_modules /app/node_modules
 COPY --from=build /app/dist /app/dist
+COPY --from=build /app/temp /app/temp
 COPY --from=pnpm /app/.env /app/.env
 COPY --from=pnpm /app/package.json /app/package.json
 CMD [ "node", "dist/main" ]

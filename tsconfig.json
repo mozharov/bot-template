@@ -18,7 +18,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true, // true to avoid incompatibility with @grammyjs/i18n
   },
-  "include": ["./src/**/*.ts", "eslint.config.js"],
+  "include": ["src/**/*.ts", "eslint.config.js"],
   "ts-node": {
     "esm": true,
     "transpileOnly": true

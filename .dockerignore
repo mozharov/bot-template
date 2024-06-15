@@ -4,6 +4,7 @@
 /.idea
 /.git
 /.github
+/temp
 .dockerignore
 .gitignore
 .prettierrc
